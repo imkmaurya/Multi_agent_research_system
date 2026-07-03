@@ -6,13 +6,32 @@ from dotenv import load_dotenv
 from tools import scrape_url,web_search
 import os
 
+
+
+# Check if the key is loaded
+
+import streamlit as st
+
 load_dotenv()
 
-print(os.getenv("MISTRAL_API_KEY"))  # Check if the key is loaded
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY") or st.secrets["MISTRAL_API_KEY"]
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY") or st.secrets["TAVILY_API_KEY"]
+mistral_key = os.getenv("MISTRAL_API_KEY")
+
+if mistral_key is None:
+    mistral_key = st.secrets["MISTRAL_API_KEY"]
+
+tavily_key = os.getenv("TAVILY_API_KEY")
+
+if tavily_key is None:
+    tavily_key = st.secrets["TAVILY_API_KEY"]
+
+
+
 
 llm = ChatMistralAI(
     model="mistral-medium-3.5",
-    api_key=os.getenv("MISTRAL_API_KEY"),
+    api_key=MISTRAL_API_KEY,
 )
 
 def build_search_agent():
